@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>لوحة التحكم | Mohamed Nagy</title>
+<style>
+@font-face { font-family: "Thmanyah Sans"; src: url("../assets/fonts/thmanyahsans-Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Thmanyah Sans"; src: url("../assets/fonts/thmanyahsans-Medium.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Thmanyah Sans"; src: url("../assets/fonts/thmanyahsans-Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+:root { --bg:#fff; --fg:#0a0a0b; --muted:#76767c; --panel:#f5f5f3; --line:#ececE9; --accent:#0a0a0b; --on-accent:#fff; --ok:#1f8a4c; --bad:#c0392b; --warn:#b7791f; --hl:#fff8e1; --shadow:0 18px 44px -18px rgba(10,10,11,.25); --font:"Thmanyah Sans",system-ui,-apple-system,"Segoe UI",sans-serif; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#0f0f13; --fg:#ececee; --muted:#9a9aa3; --panel:#18181d; --line:#26262d; --accent:#f1f1f4; --on-accent:#0a0a0b; --ok:#46c27d; --bad:#ff7b6b; --warn:#e0b050; --hl:#2a2410; --shadow:0 18px 44px -18px rgba(0,0,0,.7); color-scheme: dark; } }
+:root[data-theme="dark"] { --bg:#0f0f13; --fg:#ececee; --muted:#9a9aa3; --panel:#18181d; --line:#26262d; --accent:#f1f1f4; --on-accent:#0a0a0b; --ok:#46c27d; --bad:#ff7b6b; --warn:#e0b050; --hl:#2a2410; --shadow:0 18px 44px -18px rgba(0,0,0,.7); color-scheme: dark; }
+* { box-sizing: border-box; }
+html { scroll-behavior: auto; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font); line-height: 1.6; font-size: 16px; }
+button, input, textarea, select { font: inherit; color: inherit; }
+h1, h2, h3 { margin: 0; font-weight: 500; letter-spacing: -.01em; text-wrap: balance; }
+[hidden] { display: none !important; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 20px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); cursor: pointer; font-weight: 500; white-space: nowrap; }
+.btn:hover { background: var(--panel); }
+.btn.solid { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.btn.solid:hover { opacity: .88; background: var(--accent); }
+.btn.sm { padding: 6px 14px; font-size: .85rem; }
+.btn.danger { color: var(--bad); }
+.btn[disabled] { opacity: .5; cursor: not-allowed; }
+input[type=text], input[type=password], input[type=url], input[type=search], input[type=number], textarea { width: 100%; padding: 11px 16px; border-radius: 16px; border: 1px solid var(--line); background: var(--bg); outline: none; }
+textarea { resize: vertical; min-height: 48px; line-height: 1.55; }
+input:focus-visible, textarea:focus-visible, .btn:focus-visible, .nav button:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+label.l { display: block; font-size: .85rem; color: var(--muted); margin-bottom: 6px; }
+.muted { color: var(--muted); }
+.small { font-size: .88rem; }
+
+/* login */
+.login { min-height: 100vh; display: grid; place-items: center; padding: 20px max(16px, env(safe-area-inset-left, 0px)); }
+.card { width: 100%; max-width: 460px; background: var(--panel); border: 1px solid var(--line); border-radius: 28px; padding: 32px 28px; display: grid; gap: 16px; }
+.card h1 { font-size: 1.7rem; }
+details { border: 1px solid var(--line); border-radius: 16px; padding: 12px 16px; background: var(--bg); }
+summary { cursor: pointer; font-weight: 500; }
+details ol { margin: 10px 0 0; padding-inline-start: 22px; }
+details li { margin-bottom: 6px; }
+code { font-family: ui-monospace, Menlo, monospace; background: var(--panel); border: 1px solid var(--line); padding: 1px 6px; border-radius: 6px; font-size: .85em; direction: ltr; unicode-bidi: embed; }
+.err { color: var(--bad); min-height: 1.4em; font-size: .92rem; }
+
+/* app */
+.top { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
+.top-in { max-width: 1100px; margin: 0 auto; padding: 12px max(16px, env(safe-area-inset-left, 0px)); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.top h1 { font-size: 1.15rem; margin-inline-end: auto; }
+.badge { padding: 4px 12px; border-radius: 999px; background: var(--hl); border: 1px solid var(--line); font-size: .85rem; }
+.nav { max-width: 1100px; margin: 0 auto; padding: 0 max(16px, env(safe-area-inset-left, 0px)) 12px; display: flex; gap: 6px; flex-wrap: wrap; }
+.nav button { border: 0; background: transparent; padding: 8px 18px; border-radius: 999px; cursor: pointer; color: var(--muted); font-weight: 500; }
+.nav button[aria-current="true"] { background: var(--accent); color: var(--on-accent); }
+main { max-width: 1100px; margin: 0 auto; padding: 28px max(16px, env(safe-area-inset-left, 0px)) 120px; display: grid; gap: 24px; }
+.sec { background: var(--panel); border: 1px solid var(--line); border-radius: 24px; padding: 22px; display: grid; gap: 16px; }
+.sec > h2 { font-size: 1.25rem; }
+.field { display: grid; gap: 4px; }
+.field.changed input, .field.changed textarea { background: var(--hl); }
+.row { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.imgf { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+.imgf .th { width: 96px; height: 72px; border-radius: 14px; background: var(--bg); border: 1px solid var(--line); object-fit: contain; flex: none; }
+.imgf .th.logo { background: #fff; padding: 6px; }
+.imgf .meta { flex: 1; min-width: 180px; display: grid; gap: 6px; }
+.imgf .path { font-size: .8rem; color: var(--muted); direction: ltr; text-align: start; word-break: break-all; }
+.tree { display: grid; gap: 12px; }
+.node { border: 1px solid var(--line); background: var(--bg); border-radius: 18px; padding: 14px; display: grid; gap: 12px; }
+.node > .hd { display: flex; align-items: center; gap: 8px; justify-content: space-between; }
+.node > .hd b { font-weight: 500; }
+.items { display: grid; gap: 10px; }
+.item { border: 1px dashed var(--line); border-radius: 16px; padding: 10px; display: grid; gap: 10px; background: var(--panel); }
+.item > .ctl { display: flex; gap: 6px; justify-content: space-between; align-items: center; }
+.item > .ctl span { color: var(--muted); font-size: .82rem; }
+.ctl .b { display: flex; gap: 4px; }
+.ctl button { border: 1px solid var(--line); background: var(--bg); border-radius: 999px; width: 30px; height: 30px; cursor: pointer; }
+.ctl button:hover { background: var(--panel); }
+.pick { display: flex; gap: 8px; flex-wrap: wrap; }
+.pick button { border: 1px solid var(--line); background: var(--bg); border-radius: 999px; padding: 6px 14px; cursor: pointer; }
+.pick button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.search { position: sticky; top: 108px; z-index: 5; }
+.bar { position: fixed; inset-inline: 0; bottom: 0; z-index: 30; background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-top: 1px solid var(--line); padding: 12px max(16px, env(safe-area-inset-left, 0px)) calc(12px + env(safe-area-inset-bottom, 0px)); }
+.bar-in { max-width: 1100px; margin: 0 auto; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.bar-in .st { margin-inline-end: auto; font-size: .92rem; }
+.ok { color: var(--ok); } .bad { color: var(--bad); }
+.prev { position: fixed; inset: 0; z-index: 50; background: var(--bg); display: grid; grid-template-rows: auto 1fr; }
+.prev-h { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; border-bottom: 1px solid var(--line); }
+.prev iframe { width: 100%; height: 100%; border: 0; background: #fff; }
+.tip { background: var(--bg); border: 1px solid var(--line); border-radius: 16px; padding: 12px 16px; font-size: .92rem; color: var(--muted); }
+@media (max-width: 600px) { .sec { padding: 16px; } .search { top: 150px; } }
+</style>
+</head>
+<body>
+
+<!-- login -->
+<div class="login" id="login">
+  <form class="card" id="loginForm" autocomplete="off">
+    <h1>لوحة التحكم</h1>
+    <p class="muted" style="margin:0">من هنا تعدّل النصوص والمشاريع والصور والباسورد، وتنشر بضغطة واحدة.</p>
+    <div class="field"><label class="l" for="pw">باسورد الموقع الحالي</label><input id="pw" type="password" required autocomplete="off"></div>
+    <div class="field"><label class="l" for="tok">GitHub token</label><input id="tok" type="password" autocomplete="off" placeholder="github_pat_..." dir="ltr"></div>
+    <label class="small muted"><input type="checkbox" id="rem"> افتكرني على الجهاز ده (التوكن بس)</label>
+    <div class="field" id="repoBox" hidden><label class="l" for="repo">الـ repo (owner/name)</label><input id="repo" type="text" dir="ltr" placeholder="username/username.github.io"></div>
+    <details>
+      <summary>إزاي أجيب الـ token؟ (مرة واحدة)</summary>
+      <ol>
+        <li>افتح <code>github.com/settings/personal-access-tokens/new</code></li>
+        <li>الاسم: <code>portfolio-admin</code>، والمدة اللي تناسبك.</li>
+        <li>Repository access: اختار <b>Only select repositories</b> وحدد الـ repo بتاع الموقع بس.</li>
+        <li>Permissions &gt; Repository permissions &gt; <b>Contents: Read and write</b>.</li>
+        <li>اضغط Generate token وانسخه هنا. التوكن بيتحفظ في المتصفح بتاعك بس.</li>
+      </ol>
+    </details>
+    <div class="err" id="loginErr" role="alert"></div>
+    <button class="btn solid" id="loginBtn" type="submit">دخول</button>
+  </form>
+</div>
+
+<!-- app -->
+<div id="app" hidden>
+  <div class="top">
+    <div class="top-in">
+      <h1>لوحة التحكم</h1>
+      <span class="badge" id="badge" hidden></span>
+      <button class="btn sm" id="prevBtn" type="button">معاينة</button>
+      <button class="btn sm" id="themeBtn" type="button" aria-label="الثيم">◐</button>
+    </div>
+    <nav class="nav" id="nav" aria-label="الأقسام"></nav>
+  </div>
+  <main id="main"></main>
+  <div class="bar"><div class="bar-in">
+    <span class="st" id="status" role="status"></span>
+    <button class="btn" id="resetBtn" type="button">تراجع عن التغييرات</button>
+    <button class="btn solid" id="pubBtn" type="button">نشر التعديلات</button>
+  </div></div>
+</div>
+
+<div class="prev" id="prev" hidden>
+  <div class="prev-h"><b>معاينة (مش منشورة)</b><button class="btn sm" id="prevClose" type="button">إغلاق</button></div>
+  <iframe id="prevFrame" title="معاينة"></iframe>
+</div>
+
+<iframe id="probe" title="" hidden sandbox="allow-scripts allow-same-origin" style="display:none"></iframe>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var ITER = 600000;
+  var ROOT_LABELS = { logo: 'الشعار (أعلى اليسار)', tabs: 'شريط التبويبات', hero: 'الصفحة الرئيسية', about: 'نبذة عني', clients: 'العملاء', p1: 'كارت مشروع: Design Systems', p2: 'كارت مشروع: Alinma Apps', p3: 'كارت مشروع: Alinma Website', p8: 'كارت مشروع: Alinma Pay', p4: 'كارت مشروع: Paymob', p5: 'كارت مشروع: Preventia', p6: 'كارت مشروع: Tutor', p7: 'كارت مشروع: Ghazal', career: 'المسار المهني', contact: 'التواصل', pop: 'نافذة التواصل (زرار الشات)' };
+  var ROOT_ORDER = ['logo', 'hero', 'about', 'clients', 'p1', 'p2', 'p3', 'p8', 'p4', 'p5', 'p6', 'p7', 'career', 'contact', 'pop', 'tabs'];
+  var KEYS = { name: 'الاسم', client: 'العميل', role: 'دوري', platforms: 'المنصات', tools: 'الأدوات', lede: 'وصف قصير', overview: 'نظرة عامة', glance: 'أرقام سريعة', challenge: 'التحدي', outcome: 'النتيجة', about: 'نبذة', brief: 'المشكلة والهدف', problem: 'المشكلة', goal: 'الهدف', scope: 'اللي صممته', myrole: 'دوري في المشروع', process: 'طريقة الشغل', decisions: 'القرارات والشاشات', intro: 'مقدمة', title: 'العنوان', text: 'النص', more: 'نص إضافي', shots: 'الشاشات', imgs: 'الصور', img: 'الصورة', cards: 'كروت', t: 'العنوان', d: 'الوصف', eye: 'التصنيف', accent: 'اللون', hero: 'صورة الغلاف', gallery: 'المعرض', palettes: 'ألوان', tokens: 'توكنز', table: 'جدول', chips: 'شيبس', wide: 'عرض كامل', todo: 'ناقص (مطلوب كتابته)' };
+  var PROJECTS = { ds: 'Design Systems', apps: 'Alinma Apps', sites: 'Alinma Website', alinmapay: 'Alinma Pay', paymob: 'Paymob', preventia: 'Preventia', tutor: 'Tutor', ghazal: 'Ghazal' };
+  var IMG_RE = /\.(png|jpe?g|webp|svg|gif|avif)$/i;
+  var S = { token: '', pw: '', repo: '', gate: '', sha: null, html: '', prev: {}, items: [], data: {}, dataBase: '', uploads: {}, tab: 'texts', project: 'ds', q: '', local: false, newPw: '' };
+
+  /* ---------- helpers ---------- */
+  var enc = new TextEncoder(), dec = new TextDecoder();
+  function b64(u8) { var s = '', n = 0x8000; for (var i = 0; i < u8.length; i += n) s += String.fromCharCode.apply(null, u8.subarray(i, i + n)); return btoa(s); }
+  function unb64(s) { var r = atob(s), u = new Uint8Array(r.length); for (var i = 0; i < r.length; i++) u[i] = r.charCodeAt(i); return u; }
+  function el(tag, attrs, kids) {
+    var e = document.createElement(tag);
+    Object.keys(attrs || {}).forEach(function (k) {
+      if (k === 'class') e.className = attrs[k]; else if (k === 'text') e.textContent = attrs[k];
+      else if (k.slice(0, 2) === 'on') e.addEventListener(k.slice(2), attrs[k]); else e.setAttribute(k, attrs[k]);
+    });
+    (kids || []).forEach(function (c) { if (c) e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c); });
+    return e;
+  }
+  function clone(v) { return JSON.parse(JSON.stringify(v)); }
+  function baseUrl() { return new URL('../', location.href).href; }
+  function say(msg, cls) { var s = $('status'); s.textContent = msg || ''; s.className = 'st' + (cls ? ' ' + cls : ''); }
+
+  async function keyFrom(pw, salt, usage) {
+    var km = await crypto.subtle.importKey('raw', enc.encode(pw), 'PBKDF2', false, ['deriveKey']);
+    return crypto.subtle.deriveKey({ name: 'PBKDF2', salt: salt, iterations: ITER, hash: 'SHA-256' }, km, { name: 'AES-GCM', length: 256 }, false, [usage]);
+  }
+  async function decryptGate(gate, pw) {
+    var m = /var S="([^"]*)",I="([^"]*)",C="([^"]*)",N=(\d+);/.exec(gate);
+    if (!m) throw new Error('shape');
+    var key = await keyFrom(pw, unb64(m[1]), 'decrypt');
+    var p = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: unb64(m[2]) }, key, unb64(m[3]));
+    return dec.decode(p);
+  }
+  async function encryptHtml(html, pw) {
+    var salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
+    var key = await keyFrom(pw, salt, 'encrypt');
+    var ct = new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv }, key, enc.encode(html)));
+    return 'var S="' + b64(salt) + '",I="' + b64(iv) + '",C="' + b64(ct) + '",N=' + ITER + ';';
+  }
+
+  /* ---------- GitHub ---------- */
+  function gh(path, opt) {
+    opt = opt || {};
+    var h = Object.assign({ Authorization: 'Bearer ' + S.token, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' }, opt.headers || {});
+    return fetch('https://api.github.com/repos/' + S.repo + path, Object.assign({}, opt, { headers: h }));
+  }
+  async function loadGate() {
+    if (S.local) { var r0 = await fetch('../index.html', { cache: 'no-store' }); S.gate = await r0.text(); S.sha = null; return; }
+    var r = await gh('/contents/index.html?ref=main');
+    if (r.status === 401 || r.status === 403) throw new Error('token');
+    if (r.status === 404) throw new Error('repo');
+    if (!r.ok) throw new Error('http ' + r.status);
+    var j = await r.json(); S.sha = j.sha;
+    if (j.content) S.gate = dec.decode(unb64(j.content.replace(/\n/g, '')));
+    else { var r2 = await gh('/contents/index.html?ref=main', { headers: { Accept: 'application/vnd.github.raw+json' } }); S.gate = await r2.text(); }
+  }
+  async function put(path, b64content, sha, msg) {
+    var body = { message: msg, content: b64content, branch: 'main' }; if (sha) body.sha = sha;
+    var r = await gh('/contents/' + path.split('/').map(encodeURIComponent).join('/'), { method: 'PUT', body: JSON.stringify(body) });
+    if (!r.ok) { var t = ''; try { t = (await r.json()).message; } catch (e) {} var er = new Error('put ' + r.status + ' ' + t); er.status = r.status; throw er; }
+    return r.json();
+  }
+
+  /* ---------- load the site into a hidden frame, so we see exactly what the visitor sees ---------- */
+  function withBase(html) { return html.replace(/<head>/, '<head><base href="' + baseUrl() + '">'); }
+  function readSite(html) {
+    return new Promise(function (resolve, reject) {
+      var f = $('probe'), t0 = Date.now();
+      f.srcdoc = withBase(html);
+      var iv = setInterval(function () {
+        var w = f.contentWindow, P = w && w.__PORTFOLIO;
+        if (P) { clearInterval(iv); resolve(clone({ items: P.items, data: P.data })); }
+        else if (Date.now() - t0 > 15000) { clearInterval(iv); reject(new Error('probe')); }
+      }, 120);
+    });
+  }
+  function currentContent() { var m = /<script type="application\/json" id="site-content">([\s\S]*?)<\/script>/.exec(S.html); try { return JSON.parse(m[1]) || {}; } catch (e) { return {}; } }
+
+  /* ---------- state -> content ---------- */
+  function dirtyCount() {
+    var n = 0;
+    S.items.forEach(function (it) { if (JSON.stringify(it.cur) !== JSON.stringify(it._load)) n++; });
+    if (JSON.stringify(S.data) !== S.dataBase) n++;
+    if (S.newPw) n++;
+    return n;
+  }
+  function refreshDirty() {
+    var n = dirtyCount(), b = $('badge');
+    b.hidden = !n; b.textContent = n ? 'فيه تعديلات لسه ما اتنشرتش' : '';
+    $('pubBtn').disabled = !n; $('resetBtn').disabled = !n;
+    if (!n) say('');
+  }
+  function buildContent() {
+    var ed = {};
+    S.items.forEach(function (it) {
+      var e = {}, ch = false;
+      Object.keys(it.orig).forEach(function (f) { if (it.cur[f] !== it.orig[f]) { e[f] = it.cur[f]; e['o_' + f] = it.orig[f]; ch = true; } });
+      if (ch) ed[it.id] = e;
+    });
+    var out = { ed: ed };
+    if (JSON.stringify(S.data) !== S.dataBase) out.data = S.data; else if (S.prev.data) out.data = S.prev.data;
+    return out;
+  }
+  function injectContent(html, content) {
+    var json = JSON.stringify(content).replace(/</g, '\\u003c').split(String.fromCharCode(0x2028)).join('\\u2028').split(String.fromCharCode(0x2029)).join('\\u2029');
+    return html.replace(/(<script type="application\/json" id="site-content">)[\s\S]*?(<\/script>)/, function (m, a, b) { return a + json + b; });
+  }
+
+  /* ---------- UI: images ---------- */
+  function imgUrl(v) { if (S.uploads[v]) return S.uploads[v].url; if (/^(https?:|data:|blob:)/.test(v)) return v; return new URL(v, baseUrl()).href; }
+  function pickFile(cb) {
+    var inp = el('input', { type: 'file', accept: 'image/*,.svg' });
+    inp.addEventListener('change', function () { if (inp.files[0]) cb(inp.files[0]); });
+    inp.click();
+  }
+  function stageUpload(file, oldValue) {
+    return new Promise(function (resolve, reject) {
+      if (file.size > 12 * 1024 * 1024) { reject(new Error('الصورة أكبر من 12MB، صغّرها شوية.')); return; }
+      var rd = new FileReader();
+      rd.onload = function () {
+        var safe = file.name.toLowerCase().replace(/[^a-z0-9._-]+/g, '-').replace(/^-+|-+$/g, '') || 'image';
+        var repoPath = 'assets/uploads/' + Date.now().toString(36) + '-' + safe;
+        var old = oldValue || '', val = /^assets\//.test(old) || old.indexOf('/') < 0 ? repoPath : repoPath.slice('assets/'.length);
+        var bytes = new Uint8Array(rd.result);
+        S.uploads[val] = { repoPath: repoPath, b64: b64(bytes), url: URL.createObjectURL(new Blob([bytes], { type: file.type || 'image/png' })), size: bytes.length };
+        resolve(val);
+      };
+      rd.onerror = function () { reject(new Error('مقدرتش أقرأ الملف.')); };
+      rd.readAsArrayBuffer(file);
+    });
+  }
+  function imageField(label, get, set, extra) {
+    var path = el('div', { class: 'path', text: get() });
+    var th = el('img', { class: 'th', alt: '' });
+    function paint() { var v = get(); path.textContent = v; th.src = imgUrl(v); th.onerror = function () { th.onerror = null; th.src = imgUrl('assets/' + v); }; th.classList.toggle('logo', /logo/i.test(v)); }
+    var btn = el('button', { class: 'btn sm', type: 'button', text: 'استبدال الصورة', onclick: function () {
+      pickFile(function (f) { stageUpload(f, get()).then(function (v) { set(v); paint(); refreshDirty(); }).catch(function (e) { say(e.message, 'bad'); }); });
+    } });
+    var meta = el('div', { class: 'meta' }, [el('label', { class: 'l', text: label || 'صورة' }), path, el('div', {}, [btn]), extra]);
+    paint();
+    return el('div', { class: 'imgf' }, [th, meta]);
+  }
+
+  /* ---------- UI: simple text fields ---------- */
+  function textField(label, get, set, opts) {
+    opts = opts || {};
+    var v = get(), long = opts.long || v.length > 70 || /\n/.test(v);
+    var inp = long ? el('textarea', { rows: String(Math.min(8, Math.max(2, Math.ceil(v.length / 70)))), dir: 'auto' }) : el('input', { type: 'text', dir: 'auto' });
+    inp.value = v;
+    var wrap = el('div', { class: 'field' }, [el('label', { class: 'l', text: label }), inp]);
+    var start = v;
+    inp.addEventListener('input', function () { set(inp.value); wrap.classList.toggle('changed', inp.value !== start); refreshDirty(); });
+    return wrap;
+  }
+  function linkField(label, get, set) {
+    var f = textField(label, get, set); var i = f.querySelector('input'); i.setAttribute('dir', 'ltr'); i.type = 'text'; return f;
+  }
+
+  /* ---------- tab: texts, links, images ---------- */
+  function renderTexts(main) {
+    var q = S.q.trim().toLowerCase();
+    main.appendChild(el('div', { class: 'tip', text: 'كل نصوص الصفحة الرئيسية (الأقسام، كروت المشاريع، المسار المهني، التواصل). اكتب في الخانة وبعدين اضغط "نشر التعديلات" تحت.' }));
+    var search = el('input', { type: 'search', class: 'search', placeholder: 'ابحث في النصوص...', value: S.q, dir: 'auto' });
+    search.addEventListener('input', function () { S.q = search.value; var pos = search.selectionStart; renderTabBody(); var s2 = $('main').querySelector('.search'); if (s2) { s2.focus(); s2.setSelectionRange(pos, pos); } });
+    main.appendChild(search);
+    var by = {}; S.items.forEach(function (it) { (by[it.root] = by[it.root] || []).push(it); });
+    ROOT_ORDER.forEach(function (root) {
+      var list = (by[root] || []).filter(function (it) {
+        if (it.kind === 'img' || it.kind === 'link') return !q || JSON.stringify(it.cur).toLowerCase().indexOf(q) >= 0;
+        return !q || it.cur.t.toLowerCase().indexOf(q) >= 0;
+      });
+      if (!list.length) return;
+      var sec = el('section', { class: 'sec' }, [el('h2', { text: ROOT_LABELS[root] || root })]);
+      list.forEach(function (it, i) {
+        if (it.kind === 'text') sec.appendChild(textField('نص ' + (i + 1), function () { return it.cur.t; }, function (v) { it.cur.t = v; }));
+        else if (it.kind === 'link') sec.appendChild(linkField('رابط', function () { return it.cur.href; }, function (v) { it.cur.href = v; }));
+        else sec.appendChild(imageField('صورة', function () { return it.cur.src; }, function (v) { it.cur.src = v; }, textField('وصف الصورة (alt)', function () { return it.cur.alt; }, function (v) { it.cur.alt = v; })));
+      });
+      main.appendChild(sec);
+    });
+  }
+
+  /* ---------- tab: images (logos, photo) ---------- */
+  function renderImages(main) {
+    main.appendChild(el('div', { class: 'tip', text: 'اللوجوهات وصورتك وأي صورة في الصفحة الرئيسية. الصور اللي جوه دراسات الحالة بتتعدل من تبويب "دراسات الحالة".' }));
+    var sec = el('section', { class: 'sec' }, [el('h2', { text: 'صور الصفحة' })]);
+    var seen = {};
+    S.items.forEach(function (it) {
+      if (it.kind !== 'img') return;
+      sec.appendChild(imageField((ROOT_LABELS[it.root] || it.root) + (it.cur.alt ? ' | ' + it.cur.alt : ''), function () { return it.cur.src; }, function (v) { it.cur.src = v; }));
+    });
+    main.appendChild(sec);
+  }
+
+  /* ---------- tab: case studies (generic tree editor over the project data) ---------- */
+  function human(k) { return KEYS[k] || k; }
+  function blank(v) {
+    if (Array.isArray(v)) return v.length ? [blank(v[0])] : [];
+    if (v && typeof v === 'object') { var o = {}; Object.keys(v).forEach(function (k) { o[k] = blank(v[k]); }); return o; }
+    if (typeof v === 'number') return 0; if (typeof v === 'boolean') return false; return '';
+  }
+  function renderValue(label, parent, key, depth) {
+    var v = parent[key];
+    if (typeof v === 'string') {
+      if (IMG_RE.test(v)) return imageField(label, function () { return parent[key]; }, function (x) { parent[key] = x; });
+      return textField(label, function () { return parent[key]; }, function (x) { parent[key] = x; });
+    }
+    if (typeof v === 'number') { var nf = textField(label, function () { return String(parent[key]); }, function (x) { parent[key] = Number(x) || 0; }); return nf; }
+    if (typeof v === 'boolean') { var cb = el('input', { type: 'checkbox' }); cb.checked = v; cb.addEventListener('change', function () { parent[key] = cb.checked; refreshDirty(); }); return el('label', { class: 'small' }, [cb, ' ' + label]); }
+    if (Array.isArray(v)) {
+      var box = el('div', { class: 'items' });
+      var node = el('div', { class: 'node' }, [el('div', { class: 'hd' }, [el('b', { text: label }), el('button', { class: 'btn sm', type: 'button', text: '+ إضافة', onclick: function () {
+        var proto = v.length ? blank(v[v.length - 1]) : ''; v.push(proto); paint(); refreshDirty();
+      } })]), box]);
+      function paint() {
+        box.textContent = '';
+        v.forEach(function (it, i) {
+          var ctl = el('div', { class: 'ctl' }, [el('span', { text: '#' + (i + 1) }), el('div', { class: 'b' }, [
+            el('button', { type: 'button', title: 'فوق', text: '↑', onclick: function () { if (i > 0) { var t = v[i - 1]; v[i - 1] = v[i]; v[i] = t; paint(); refreshDirty(); } } }),
+            el('button', { type: 'button', title: 'تحت', text: '↓', onclick: function () { if (i < v.length - 1) { var t = v[i + 1]; v[i + 1] = v[i]; v[i] = t; paint(); refreshDirty(); } } }),
+            el('button', { type: 'button', title: 'حذف', text: '✕', onclick: function () { v.splice(i, 1); paint(); refreshDirty(); } })])]);
+          var inner = (it && typeof it === 'object' && !Array.isArray(it)) || Array.isArray(it) || typeof it !== 'object' ? renderValue('', v, i, depth + 1) : null;
+          box.appendChild(el('div', { class: 'item' }, [ctl, inner]));
+        });
+        if (!v.length) box.appendChild(el('p', { class: 'muted small', text: 'فاضي. اضغط "+ إضافة".' }));
+      }
+      paint();
+      return node;
+    }
+    if (v && typeof v === 'object') {
+      var kids = Object.keys(v).map(function (k) { return renderValue(human(k), v, k, depth + 1); });
+      var wrap = el('div', { class: 'row' }, kids);
+      if (depth > 0 && label) return el('div', { class: 'node' }, [el('div', { class: 'hd' }, [el('b', { text: label })]), wrap]);
+      return wrap;
+    }
+    return el('span');
+  }
+  function renderCases(main) {
+    main.appendChild(el('div', { class: 'tip', text: 'اختار المشروع وعدّل أي حاجة في دراسة الحالة بتاعته. تقدر تضيف وتحذف وتحرّك العناصر، وتستبدل أي صورة.' }));
+    var pick = el('div', { class: 'pick' });
+    Object.keys(PROJECTS).concat(['_screens']).forEach(function (k) {
+      pick.appendChild(el('button', { type: 'button', 'aria-pressed': String(S.project === k), text: k === '_screens' ? 'قوائم الشاشات' : PROJECTS[k], onclick: function () { S.project = k; renderTabBody(); } }));
+    });
+    main.appendChild(pick);
+    if (S.project === '_screens') {
+      ['TUT', 'GH', 'HERO'].forEach(function (k) {
+        var t = { TUT: 'شاشات Tutor (المعرض)', GH: 'شاشات Ghazal (المعرض)', HERO: 'صور الغلاف (3 تليفونات)' }[k];
+        main.appendChild(el('section', { class: 'sec' }, [el('h2', { text: t }), renderValue(t, S.data, k, 0)]));
+      });
+    } else {
+      main.appendChild(el('section', { class: 'sec' }, [el('h2', { text: PROJECTS[S.project] }), renderValue('', S.data.D, S.project, 0)]));
+    }
+  }
+
+  /* ---------- tab: password ---------- */
+  function renderPassword(main) {
+    var a = el('input', { type: 'password', autocomplete: 'new-password' }), b = el('input', { type: 'password', autocomplete: 'new-password' }), msg = el('div', { class: 'err' });
+    function check() {
+      msg.className = 'err';
+      if (!a.value && !b.value) { S.newPw = ''; msg.textContent = ''; }
+      else if (a.value.length < 8) { S.newPw = ''; msg.textContent = 'الباسورد لازم يكون 8 حروف على الأقل (والأفضل 12).'; }
+      else if (a.value !== b.value) { S.newPw = ''; msg.textContent = 'الباسوردين مش متطابقين.'; }
+      else { S.newPw = a.value; msg.textContent = 'تمام. الباسورد الجديد هيتطبق لما تنشر.'; msg.className = 'err ok'; }
+      refreshDirty();
+    }
+    a.addEventListener('input', check); b.addEventListener('input', check);
+    if (S.newPw) { a.value = b.value = S.newPw; }
+    main.appendChild(el('section', { class: 'sec' }, [
+      el('h2', { text: 'تغيير الباسورد' }),
+      el('p', { class: 'muted', text: 'الباسورد اللي الزائر بيكتبه علشان يفتح الموقع. بعد النشر، أي حد معاه الباسورد القديم مش هيقدر يدخل.' }),
+      el('div', { class: 'field' }, [el('label', { class: 'l', text: 'الباسورد الجديد' }), a]),
+      el('div', { class: 'field' }, [el('label', { class: 'l', text: 'تأكيد الباسورد' }), b]), msg,
+      el('p', { class: 'muted small', text: 'ملاحظة: الباسورد بيحمي صفحة الموقع نفسها، لكن ملفات الصور على الـ repo العام تفضل مفتوحة لمن يعرف مسارها.' })
+    ]));
+  }
+
+  /* ---------- shell ---------- */
+  var TABS = [['texts', 'النصوص والروابط'], ['cases', 'دراسات الحالة'], ['images', 'الصور واللوجو'], ['pw', 'الباسورد']];
+  function renderNav() {
+    var nav = $('nav'); nav.textContent = '';
+    TABS.forEach(function (t) { nav.appendChild(el('button', { type: 'button', 'aria-current': String(S.tab === t[0]), text: t[1], onclick: function () { S.tab = t[0]; renderNav(); renderTabBody(); window.scrollTo(0, 0); } })); });
+  }
+  function renderTabBody() {
+    var main = $('main'); var y = window.scrollY; main.textContent = '';
+    if (S.tab === 'texts') renderTexts(main); else if (S.tab === 'cases') renderCases(main); else if (S.tab === 'images') renderImages(main); else renderPassword(main);
+    window.scrollTo(0, y);
+  }
+
+  /* ---------- preview ---------- */
+  $('prevBtn').addEventListener('click', function () {
+    var html = injectContent(S.html, buildContent());
+    $('prevFrame').srcdoc = withBase(html); $('prev').hidden = false;
+  });
+  $('prevClose').addEventListener('click', function () { $('prev').hidden = true; $('prevFrame').srcdoc = ''; });
+
+  /* ---------- reset ---------- */
+  $('resetBtn').addEventListener('click', function () {
+    S.items.forEach(function (it) { it.cur = clone(it._load); });
+    S.data = JSON.parse(S.dataBase); S.newPw = ''; S.uploads = {};
+    renderTabBody(); refreshDirty(); say('اتراجع عن كل التعديلات.');
+  });
+
+  /* ---------- publish ---------- */
+  $('pubBtn').addEventListener('click', async function () {
+    var btn = $('pubBtn'); btn.disabled = true;
+    try {
+      var content = buildContent(), html2 = injectContent(S.html, content), pw2 = S.newPw || S.pw;
+      say('بشفّر الموقع...');
+      var line = await encryptHtml(html2, pw2);
+      var gate2 = S.gate.replace(/var S="[^"]*",I="[^"]*",C="[^"]*",N=\d+;/, function () { return line; });
+      if (gate2 === S.gate) throw new Error('مفيش تغيير اتطبق.');
+      /* make sure the new file really opens with the new password before sending it */
+      var check = await decryptGate(gate2, pw2);
+      if (check !== html2) throw new Error('فشل فحص التشفير، ما نشرتش حاجة.');
+      var used = Object.keys(S.uploads).filter(function (k) { return html2.indexOf(JSON.stringify(k).slice(1, -1)) >= 0; });
+      if (S.local) { window.__lastPublish = { gate2: gate2, html2: html2, pw: pw2, uploads: used }; say('تجربة محلية: التعديل جاهز (' + Math.round(gate2.length / 1024) + 'KB) بس ما اتبعتش لـ GitHub.', 'ok'); btn.disabled = false; return; }
+      for (var i = 0; i < used.length; i++) {
+        var u = S.uploads[used[i]]; say('برفع صورة ' + (i + 1) + ' من ' + used.length + '...');
+        await put(u.repoPath, u.b64, null, 'Add image ' + u.repoPath);
+      }
+      say('برفع الموقع...');
+      try { await put('index.html', b64(enc.encode(gate2)), S.sha, 'Update portfolio from dashboard'); }
+      catch (e) { if (e.status === 409 || e.status === 422) throw new Error('الموقع اتعدّل من مكان تاني. اعمل ريفريش وادخل تاني علشان تاخد آخر نسخة، وبعدين كرر التعديل.'); throw e; }
+      S.pw = pw2; S.newPw = '';
+      say('اتنشر ✓ الموقع هيتحدث على الإنترنت بعد دقيقة أو اتنين. جاري إعادة تحميل اللوحة...', 'ok');
+      await boot(true);
+    } catch (e) { say(e.message || String(e), 'bad'); btn.disabled = false; }
+  });
+
+  /* ---------- boot ---------- */
+  async function boot(keepTab) {
+    await loadGate();
+    S.html = await decryptGate(S.gate, S.pw);
+    S.prev = currentContent();
+    var site = await readSite(S.html);
+    S.items = site.items.map(function (it) { it._load = clone(it.cur); return it; });
+    S.data = site.data; S.dataBase = JSON.stringify(S.data); S.uploads = {};
+    $('login').hidden = true; $('app').hidden = false;
+    if (!keepTab) S.tab = 'texts';
+    renderNav(); renderTabBody(); refreshDirty();
+  }
+  $('themeBtn').addEventListener('click', function () {
+    var r = document.documentElement, dark = r.getAttribute('data-theme') === 'dark' || (r.getAttribute('data-theme') !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches);
+    r.setAttribute('data-theme', dark ? 'light' : 'dark');
+  });
+
+  var host = location.hostname, isLocal = host === 'localhost' || host === '127.0.0.1';
+  var m = /^([^.]+)\.github\.io$/.exec(host);
+  try { var saved = localStorage.getItem('adm.token'); if (saved) { $('tok').value = saved; $('rem').checked = true; } var sr = localStorage.getItem('adm.repo'); if (sr) $('repo').value = sr; } catch (e) {}
+  if (m) $('repo').value = host; else if (!isLocal) $('repoBox').hidden = false;
+  if (isLocal) $('tok').placeholder = 'مش لازم في التجربة المحلية';
+
+  $('loginForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var err = $('loginErr'), btn = $('loginBtn'); err.textContent = '';
+    S.pw = $('pw').value; S.token = $('tok').value.trim();
+    var repo = $('repo').value.trim(); if (m) repo = m[1] + '/' + host;
+    S.repo = repo; S.local = isLocal && !S.token;
+    if (!S.local && !S.token) { err.textContent = 'اكتب الـ GitHub token.'; return; }
+    if (!S.local && !/^[^/\s]+\/[^/\s]+$/.test(S.repo)) { err.textContent = 'اكتب الـ repo بالشكل owner/name.'; return; }
+    btn.disabled = true; btn.textContent = 'بفتح...';
+    try {
+      await boot(false);
+      try { if ($('rem').checked && S.token) { localStorage.setItem('adm.token', S.token); localStorage.setItem('adm.repo', S.repo); } else { localStorage.removeItem('adm.token'); } } catch (x) {}
+    } catch (x) {
+      var msg = String(x && x.message || x);
+      err.textContent = /OperationError|decrypt|shape/i.test(msg) || x.name === 'OperationError' ? 'الباسورد غلط.' : msg === 'token' ? 'الـ token غلط أو معندوش صلاحية على الـ repo.' : msg === 'repo' ? 'مش لاقي الـ repo أو الملف index.html.' : msg === 'probe' ? 'الموقع ما اتحمّلش في اللوحة. جرّب تاني.' : 'حصلت مشكلة: ' + msg;
+    }
+    btn.disabled = false; btn.textContent = 'دخول';
+  });
+})();
+</script>
+</body>
+</html>
