@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DS Icons: a free icon library</title>
+<title>Free Icon Library by Mohamed Nagy</title>
 <meta name="description" content="Free icon library by Mohamed Nagy: 2,010 icons in more than 12,000 variants, in six weights and types. Search, preview, then copy as SVG, PNG or straight into Figma.">
-<meta property="og:title" content="DS Icons, a free icon library">
+<meta property="og:title" content="Free Icon Library by Mohamed Nagy">
 <meta property="og:description" content="2,010 icons in 6 weights and types, plus color tokens. Free to copy as SVG, PNG or to Figma. Designed by Mohamed Nagy.">
 <meta name="author" content="Mohamed Nagy">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20256%20256%22%3E%3Cpath%20fill%3D%22%23002134%22%20d%3D%22M120%2C56v48a16%2C16%2C0%2C0%2C1-16%2C16H56a16%2C16%2C0%2C0%2C1-16-16V56A16%2C16%2C0%2C0%2C1%2C56%2C40h48A16%2C16%2C0%2C0%2C1%2C120%2C56Zm80-16H152a16%2C16%2C0%2C0%2C0-16%2C16v48a16%2C16%2C0%2C0%2C0%2C16%2C16h48a16%2C16%2C0%2C0%2C0%2C16-16V56A16%2C16%2C0%2C0%2C0%2C200%2C40Zm-96%2C96H56a16%2C16%2C0%2C0%2C0-16%2C16v48a16%2C16%2C0%2C0%2C0%2C16%2C16h48a16%2C16%2C0%2C0%2C0%2C16-16V152A16%2C16%2C0%2C0%2C0%2C104%2C136Zm96%2C0H152a16%2C16%2C0%2C0%2C0-16%2C16v48a16%2C16%2C0%2C0%2C0%2C16%2C16h48a16%2C16%2C0%2C0%2C0%2C16-16V152A16%2C16%2C0%2C0%2C0%2C200%2C136Z%22%2F%3E%3C%2Fsvg%3E">
@@ -650,7 +650,12 @@ button,input,select{font-family:inherit}
 .cat .n{opacity:.55}
 /* tiles: plain cards, soft hover */
 .tile,.wcell,.wrow,.pv-stage,.pv-empty{border-radius:var(--radius)}
-.tile:hover{border-color:var(--muted-fg);box-shadow:none;transform:translateY(-1px)}
+.tile:hover{border-color:color-mix(in srgb,var(--pt) 90%,var(--border));background:color-mix(in srgb,var(--pt) 18%,var(--card));box-shadow:0 12px 28px -16px color-mix(in srgb,var(--pt) 95%,transparent);transform:translateY(-2px)}
+:root{--pt:#e1d8ff}html[data-theme="dark"]{--pt:#3a3068}
+.tile:nth-child(5n+1){--pt:#ffd3e0}.tile:nth-child(5n+2){--pt:#ffe2cc}.tile:nth-child(5n+4){--pt:#cfe3ff}.tile:nth-child(5n+5){--pt:#d6f5e6}
+html[data-theme="dark"] .tile:nth-child(5n+1){--pt:#5a2a45}html[data-theme="dark"] .tile:nth-child(5n+2){--pt:#55392a}html[data-theme="dark"] .tile:nth-child(5n+4){--pt:#24406b}html[data-theme="dark"] .tile:nth-child(5n+5){--pt:#1f4a3b}
+.cat:hover{background:color-mix(in srgb,var(--pt) 55%,var(--bg))}
+.sf-pill.ghost:hover{background:color-mix(in srgb,var(--pt) 55%,var(--bg));border-color:var(--pt)}
 .tile.sel,.wcell.sel{border-color:var(--fg);box-shadow:0 0 0 1px var(--fg)}
 .tile .nm{font-size:10px}
 .cp:hover{color:var(--fg);border-color:var(--fg)}
@@ -684,7 +689,7 @@ html[data-theme="dark"] .gbar{background:linear-gradient(180deg,rgba(60,60,70,.5
 html[data-theme="dark"] .gbar::after{background:linear-gradient(115deg,rgba(255,255,255,.22) 0%,rgba(255,255,255,0) 28%,rgba(255,255,255,0) 70%,rgba(255,255,255,.1) 100%)}
 html[data-theme="dark"] .gtab[aria-current="true"]{color:#0a0a0b;background:linear-gradient(180deg,#fff,#dcdce2);box-shadow:inset 0 1px 1px rgba(255,255,255,.9),0 6px 16px rgba(0,0,0,.45)}
 @media (prefers-reduced-transparency:reduce){.gbar,.topbar,.icon-btn{background:var(--bg);backdrop-filter:none;-webkit-backdrop-filter:none}.gbar::after{display:none}}
-@media (max-width:620px){.gtab{padding:11px 14px;font-size:.88rem}.gtab span.t{display:none}.gtab[aria-current="true"] span.t{display:inline}}
+@media (max-width:620px){.gtab{padding:11px 14px;font-size:.88rem}.gtab span.t{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}}
 
 /* header and footer of the portfolio, so the library reads as an inner page of the site */
 .brand{gap:0}
@@ -706,7 +711,8 @@ html[data-theme="dark"] .plogo .m i{background:#131315}
 .sf-pill:hover{transform:translateY(-1px) scale(1.03)}
 .sf-soc{display:flex;gap:8px;flex-wrap:wrap}
 .sf-soc a{padding:9px 18px;border:1px solid var(--border);border-radius:999px;text-decoration:none;color:var(--fg);font-weight:500;font-size:.9rem;transition:border-color .3s,background .3s}
-.sf-soc a:hover{border-color:var(--muted-fg);background:var(--muted)}
+.sf-soc a[href*="linkedin"]{--b:#0a66c2}.sf-soc a[href*="behance"]{--b:#1769ff}.sf-soc a[href*="dribbble"]{--b:#ea4c89}.sf-soc a[href*="youtube"]{--b:#ff0033}
+.sf-soc a:hover{border-color:var(--b);color:var(--b);background:var(--bg);box-shadow:0 12px 28px -10px color-mix(in srgb,var(--b) 60%,transparent)}
 .sf-bot{display:flex;flex-wrap:wrap;gap:6px 24px;justify-content:space-between;color:var(--muted-fg);font-size:.82rem}
 .sf-bot a{color:var(--fg)}
 /* floating contact and back-to-top, with a reading-progress ring, like the portfolio */
@@ -732,8 +738,8 @@ html[data-theme="dark"] .plogo .m i{background:#131315}
     <div class="brand">
       <a class="plogo" href="../" aria-label="Mohamed Nagy, back to the portfolio"><span class="m">M<i></i></span><span class="nm">Nagi</span></a>
       <div class="bt">
-        <div class="brand-t">DS Icons</div>
-        <div class="brand-s">A free icon library by Mohamed Nagy</div>
+        <div class="brand-t">Free Icon Library</div>
+        <div class="brand-s">2,010 icons, free to use</div>
       </div>
     </div>
     <div class="pills" id="sectionPills">
@@ -870,7 +876,7 @@ html[data-theme="dark"] .plogo .m i{background:#131315}
     <div class="modal-head">
       <div>
         <div class="modal-title" id="waTitle">What's new</div>
-        <div class="modal-sub">DS Icons</div>
+        <div class="modal-sub">Free Icon Library</div>
       </div>
       <span class="ver" id="waVer"></span>
       <button class="modal-x" id="waClose" title="Close">
@@ -1812,7 +1818,7 @@ $("#themeBtn").addEventListener("click", ()=>{
 (function initTheme(){
   let t = null;
   try{ t = localStorage.getItem("site-theme"); }catch(e){}
-  if (!t) t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  if (!t) t = "light";
   applyTheme(t);
 })();
 
